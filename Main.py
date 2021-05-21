@@ -1,3 +1,10 @@
+"""
+Author: Georgios Voulgaris
+Date: 16/05/2021
+Description: Pix2Pix GAN architecture. The aim of this project is to generate synthetic images and see how this
+generative model could be used in semantic segmentation tasks.
+"""
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -62,7 +69,7 @@ def main():
                 d_fake_loss = bce(d_fake, torch.zeros_like(d_fake))
                 d_loss = (d_real_loss + d_fake_loss) / 2  # /2 so discriminator train slower than the generator
 
-            disc.zero_grad()
+            opt_disc.zero_grad()
             d_scaler.scale(d_loss).backward()
             d_scaler.step(opt_disc)
             d_scaler.update()
