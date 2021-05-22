@@ -34,6 +34,8 @@ def arguments():
     parser.add_argument("--num-workers", type=int, default=2)
     parser.add_argument("--img-size", type=int, default=256)
     parser.add_argument("--channels-img", type=int, default=3)
+    parser.add_argument("--features", type=int, default=64)
+    parser.add_argument("--in-channels", type=int, default=3)
     parser.add_argument("--l1-lambda", type=int, default=100)
     parser.add_argument("--lambda-gp", type=int, default=10)
     parser.add_argument("--load-model", default=False)
@@ -54,7 +56,7 @@ def main():
         device = torch.device("cpu")
         print("Running on the CPU")
 
-    def train_fn(disc, gen, loader, opt_disc, opt_gen, l1, bce, d_scaler, g_scaler):
+    def train_fn(disc, gen, loader, opt_disc, opt_gen, l1_loss, bce, d_scaler, g_scaler):
         loop = tqdm(loader, leave=True)
 
         for idx, (x, y) in enumerate(loop):
@@ -92,8 +94,8 @@ def main():
                     D_fake=torch.sigmoid(d_fake).mean().item(),
                 )
 
-    disc = Discriminator(in_channels=3).to(device)
-    gen = Generator(in_channels=3).to(device)
+    disc = Discriminator(args.in_channels).to(device)
+    gen = Generator(args.in_channels, args.features).to(device)
     opt_disc = optim.Adam(disc.parameters(), lr=args.lr, betas=(0.5, 0.999))
     opt_gen = optim.Adam(gen.parameters(), lr=args.lr, betas=(0.5, 0.999))
     bce = nn.BCEWithLogitsLoss()
