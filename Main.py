@@ -37,7 +37,6 @@ def arguments():
     parser.add_argument("--features", type=int, default=64)
     parser.add_argument("--in-channels", type=int, default=3)
     parser.add_argument("--l1-lambda", type=int, default=100)
-    parser.add_argument("--lambda-gp", type=int, default=10)
     parser.add_argument("--load-model", default=False)
     parser.add_argument("--save-model", default=False)
     parser.add_argument("--checkpoint-disc", default="disc.pth.tar")
@@ -58,6 +57,7 @@ def main():
 
     def train_fn(disc, gen, loader, opt_disc, opt_gen, l1_loss, bce, d_scaler, g_scaler):
         loop = tqdm(loader, leave=True)
+        print(f"\nEpoch {epoch + 1}/{args.epochs}")
 
         for idx, (x, y) in enumerate(loop):
             x, y = x.to(device), y.to(device)
