@@ -92,6 +92,7 @@ def main():
                 loop.set_postfix(
                     D_real=torch.sigmoid(d_real).mean().item(),
                     D_fake=torch.sigmoid(d_fake).mean().item(),
+                    Epoch=epoch + 1,
                 )
 
     disc = Discriminator(args.in_channels).to(device)
