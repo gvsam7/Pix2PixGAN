@@ -9,6 +9,7 @@ transform_only_input = A.Compose(
     [
         A.HorizontalFlip(p=0.5),
         A.ColorJitter(p=0.2),
+        A.Cutout(num_holes=8, max_h_size=12, max_w_size=12, fill_value=0, p=0.5),
         A.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5], max_pixel_value=255.0),
         ToTensorV2(),
     ]
